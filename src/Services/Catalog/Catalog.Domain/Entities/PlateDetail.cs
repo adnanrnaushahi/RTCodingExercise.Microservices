@@ -6,6 +6,6 @@
 
         public Guid? PlateId { get; set; }
 
-        public bool IsAvialable { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

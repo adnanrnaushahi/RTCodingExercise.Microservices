@@ -1,10 +1,21 @@
-﻿namespace WebMVC.Controllers
+﻿using WebMVC.Services;
+
+namespace WebMVC.Controllers
 {
     public class PlatesController : Controller
     {
-        public IActionResult Index()
+        private readonly IPlateService _plateService;
+
+        public PlatesController(IPlateService plateService)
         {
-            return View();
+            _plateService = plateService;
+           
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var plates = await _plateService.GetAllPlatesAsync();
+            return View(plates);
         }
     }
 }

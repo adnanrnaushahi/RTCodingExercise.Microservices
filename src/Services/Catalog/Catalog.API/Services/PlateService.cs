@@ -4,14 +4,25 @@ namespace Catalog.API.Services
 {
     public class PlateService : IPlateService
     {
-        public Task<IEnumerable<Plate>> GetAllPlatesAsync()
+        private readonly IPlateRepository _plateRepository;
+        private readonly IPlateDetailRepository _plateDetailRepository;
+        private readonly ILogger<PlateService> _logger;
+
+        public PlateService(IPlateRepository plateRepository, IPlateDetailRepository plateDetailRepository, ILogger<PlateService> logger)
         {
-            throw new NotImplementedException();
+            _plateRepository = plateRepository;
+            _plateDetailRepository = plateDetailRepository;
+            _logger = logger;
         }
 
-        public Task<Plate> GetPlateByIdAsync(Guid id)
+        public async Task<IEnumerable<Plate>> GetAllPlatesAsync()
         {
-            throw new NotImplementedException();
+            return await _plateRepository.GetAllPlatesAsync();
+        }
+
+        public async Task<Plate?> GetPlateByIdAsync(Guid id)
+        {
+            return await _plateRepository.GetPlateByIdAsync(id);
         }
     }
 }

@@ -30,18 +30,18 @@ namespace Catalog.API.Repositories
 
         public async Task<IEnumerable<Plate>> GetAllPlatesAsync()
         {
-            return await _context.Plates.ToListAsync();
+            return await _dbContext.Plates.ToListAsync();
         }
 
         public async Task<Plate?> GetPlateByIdAsync(Guid id)
         {
-            return await _context.Plates.FindAsync(id);
+            return await _dbContext.Plates.FindAsync(id);
         }
 
         public async Task UpdatePlateAsync(Plate plate)
         {
-            _context.Entry(plate).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _dbContext.Entry(plate).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

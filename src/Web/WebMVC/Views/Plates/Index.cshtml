@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WebMVC.Models.PlateViewModel>
+
+@{
+    ViewData["Title"] = "Registration Plates";
+}
+
+<div class="container">
+    <h1 class="my-4">Registration Plates</h1>
+
+    <div class="mb-4">
+        <a asp-action="Available" class="btn btn-outline-primary">Available Plates</a>
+        <a asp-action="Search" class="btn btn-outline-secondary">Search Plates</a>
+    </div>
+
+    <div class="row">
+        @foreach (var plate in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@plate.Registration</h5>
+                        <p class="card-text">
+                            <strong>Letters:</strong> @plate.Letters<br />
+                            <strong>Numbers:</strong> @plate.Numbers<br />
+                            <strong>Price:</strong> £@plate.SalePrice.ToString("N2")<br />
+                            <strong>Status:</strong> @(plate.IsAvailable ? "Available" : "Unavailable")
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@plate.Id" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

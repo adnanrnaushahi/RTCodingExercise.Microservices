@@ -1,6 +1,6 @@
-﻿namespace WebMVC.Models
+﻿namespace Catalog.API.DTO
 {
-    public class PlateViewModel
+    public class PlateDto
     {
         public Guid Id { get; set; }
         public string Registration { get; set; }
