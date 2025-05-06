@@ -1,6 +1,6 @@
 ﻿namespace Catalog.API.Controllers
 {
-    public class HomeController : Controller
+    public class PlatesController : ControllerBase
     {
         public IActionResult Index()
         {

@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.Data
+﻿using Catalog.Domain.Models;
+
+namespace Catalog.API.Data
 {
     public class ApplicationDbContext : DbContext
     {
