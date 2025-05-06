@@ -1,4 +1,4 @@
-﻿using Catalog.Domain.Models;
+﻿using Catalog.Domain.Entities;
 using Newtonsoft.Json;
 
 namespace Catalog.API.Data

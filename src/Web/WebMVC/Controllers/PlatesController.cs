@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace WebMVC.Controllers
+﻿namespace WebMVC.Controllers
 {
     public class PlatesController : Controller
     {

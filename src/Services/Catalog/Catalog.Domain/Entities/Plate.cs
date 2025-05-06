@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Models
+﻿namespace Catalog.Domain.Entities
 {
     public class Plate
     {

@@ -1,4 +1,4 @@
-﻿using Catalog.Domain.Models;
+﻿using Catalog.Domain.Entities;
 
 namespace Catalog.API.Data
 {
@@ -10,5 +10,6 @@ namespace Catalog.API.Data
         }
 
         public DbSet<Plate> Plates { get; set; }
+        public DbSet<PlateDetail> PlateDetails { get; set; }
     }
 }

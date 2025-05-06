@@ -1,0 +1,47 @@
+﻿using Catalog.Domain.Entities;
+using Catalog.Domain.Interfaces;
+
+namespace Catalog.API.Repositories
+{
+    public class PlateRepository : IPlateRepository
+    {
+        private readonly ApplicationDbContext _dbContext;
+        public PlateRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<Plate> AddPlateAsync(Plate plate)
+        {
+            var entry = await _dbContext.Plates.AddAsync(plate);
+            await _dbContext.SaveChangesAsync();
+            return entry.Entity;
+        }
+
+        public async Task DeletePlateAsync(Guid id)
+        {
+            var plate = await _dbContext.Plates.FindAsync(id);
+            if (plate != null)
+            {
+                _dbContext.Plates.Remove(plate);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Plate>> GetAllPlatesAsync()
+        {
+            return await _context.Plates.ToListAsync();
+        }
+
+        public async Task<Plate?> GetPlateByIdAsync(Guid id)
+        {
+            return await _context.Plates.FindAsync(id);
+        }
+
+        public async Task UpdatePlateAsync(Plate plate)
+        {
+            _context.Entry(plate).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+    }
+}
