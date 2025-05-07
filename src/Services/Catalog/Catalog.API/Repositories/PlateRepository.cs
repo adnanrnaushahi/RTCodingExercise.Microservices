@@ -28,11 +28,12 @@ namespace Catalog.API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Plate>> GetPlatesAsync(int pageSize, int pageIndex)
+        public async Task<IEnumerable<Plate>> GetPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true)
         {
-            return await _dbContext.Plates
-                .OrderBy(p => p.Registration)
-                .Skip(pageIndex * pageSize)
+            return orderByAsc ? await _dbContext.Plates.OrderBy(p => p.SalePrice).Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync()
+                : await _dbContext.Plates.OrderByDescending(p => p.SalePrice).Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
         }

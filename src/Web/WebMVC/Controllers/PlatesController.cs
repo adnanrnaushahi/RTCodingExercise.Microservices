@@ -15,9 +15,11 @@ namespace WebMVC.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(int pageIndex = 0)
-        {            
-            var plates = await _plateService.GetAllPlatesAsync(DefaultPageSize, pageIndex);
+        public async Task<IActionResult> Index(int pageIndex = 0, string sortOrder = "")
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.PriceSortParam = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "";
+            var plates = await _plateService.GetAllPlatesAsync(DefaultPageSize, pageIndex, sortOrder == "price_desc" ? false : true);
             return View(plates);            
         }
 

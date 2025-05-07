@@ -5,7 +5,7 @@ namespace Catalog.Domain.Interfaces
 {
     public interface IPlateService
     {
-        Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex);
+        Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true);
 
         Task<Plate?> GetPlateByIdAsync(Guid id);
 

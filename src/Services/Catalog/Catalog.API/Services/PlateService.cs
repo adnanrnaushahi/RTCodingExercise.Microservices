@@ -22,9 +22,9 @@ namespace Catalog.API.Services
             return await _plateRepository.GetPlateByIdAsync(id);
         }
 
-        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex)
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true)
         {
-            var plates = await _plateRepository.GetPlatesAsync(pageSize, pageIndex);
+            var plates = await _plateRepository.GetPlatesAsync(pageSize, pageIndex, orderByAsc);
             var totalCount = await _plateRepository.GetTotalPlatesCountAsync();
             return (plates, totalCount);
         }

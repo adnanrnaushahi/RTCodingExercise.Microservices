@@ -19,9 +19,9 @@ namespace Catalog.API.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> GetPlates(int pageSize = 20, int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> GetPlates(int pageSize = 20, int pageIndex = 0, bool orderByAsc = true)
         {
-            var response = await _plateService.GetPlatesAsync(pageSize, pageIndex);
+            var response = await _plateService.GetPlatesAsync(pageSize, pageIndex, orderByAsc);
             return Ok(new PaginatedItemsDto<PlateDto>
             {
                 PageIndex = pageIndex,

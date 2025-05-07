@@ -17,9 +17,9 @@ namespace WebMVC.Services
             _catalogApiUrl = settings.Value.CatalogApiUrl;
         }
 
-        public async Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex)
+        public async Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true)
         {
-            var uri = new Uri($"{_catalogApiUrl}/api/plates?pageSize={pageSize}&pageIndex={pageIndex}");
+            var uri = new Uri($"{_catalogApiUrl}/api/plates?pageSize={pageSize}&pageIndex={pageIndex}&orderByAsc={orderByAsc}");
             var response = await _httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
