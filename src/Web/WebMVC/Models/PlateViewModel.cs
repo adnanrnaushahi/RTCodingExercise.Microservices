@@ -1,6 +1,6 @@
 ﻿using Catalog.Domain.Enum;
 
-namespace WebMVC.Models
+namespace WebMVC.ViewModels
 {
     public class PlateViewModel
     {

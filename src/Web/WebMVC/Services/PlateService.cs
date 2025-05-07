@@ -1,5 +1,8 @@
-﻿using WebMVC.Models;
+﻿using System.Text;
+using System.Text.Json;
+using MassTransit.Registration;
 using WebMVC.Utils;
+using WebMVC.ViewModels;
 
 namespace WebMVC.Services
 {
@@ -32,6 +35,22 @@ namespace WebMVC.Services
 
             var content = await response.Content.ReadAsStringAsync();
             return JsonConverterUtils.ToPlateViewModel(content);
+        }
+
+        public async Task<PlateViewModel> CreatePlateAsync(CreatePlateViewModel model)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{_catalogApiUrl}/api/plates", content);
+            response.EnsureSuccessStatusCode();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Error creating plate: {response.StatusCode}, {errorContent}");
+            }
+
+            var plateContent = await response.Content.ReadAsStringAsync();
+            return JsonConverterUtils.ToPlateViewModel(plateContent);
         }
     }
 }

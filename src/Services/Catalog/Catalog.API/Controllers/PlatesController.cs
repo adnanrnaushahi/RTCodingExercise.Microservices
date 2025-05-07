@@ -9,10 +9,12 @@ namespace Catalog.API.Controllers
     public class PlatesController : ControllerBase
     {
         private readonly IPlateService _plateService;
+        private readonly ILogger<PlatesController> _logger;
 
-        public PlatesController(IPlateService plateService)
+        public PlatesController(IPlateService plateService, ILogger<PlatesController> logger)
         {
             _plateService = plateService;
+            _logger = logger;
         }
         
         [HttpGet]
@@ -40,6 +42,29 @@ namespace Catalog.API.Controllers
                 return NotFound();
 
             return Ok(Mappers.PlateMapper.MapToPlateDto(plate));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(PlateDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<PlateDto>> CreatePlate([FromBody] PlateDto createPlateDto)
+        {
+            try
+            {
+                var plate = await _plateService.CreatePlateAsync(
+                    createPlateDto.Registration,
+                    createPlateDto.PurchasePrice,
+                    createPlateDto.SalePrice,
+                    createPlateDto.Letters,
+                    createPlateDto.Numbers);
+
+                return CreatedAtAction(nameof(GetPlateById), new { id = plate.Id }, Mappers.PlateMapper.MapToPlateDto(plate));
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, "Error creating plate");
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

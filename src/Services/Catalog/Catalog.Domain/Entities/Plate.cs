@@ -17,5 +17,16 @@ namespace Catalog.Domain.Entities
         public int Numbers { get; set; }
 
         public PlateStatus Status { get; set; } = PlateStatus.Available;
+
+        public Plate(string registration, decimal purchasePrice, decimal salePrice, string letters, int numbers)
+        {
+            Id = Guid.NewGuid();
+            Registration = registration;
+            PurchasePrice = purchasePrice;
+            SalePrice = salePrice;
+            Letters = letters;
+            Numbers = numbers;
+            Status = PlateStatus.Available;
+        }
     }
 }

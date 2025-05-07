@@ -11,9 +11,10 @@ namespace Catalog.API.Services
             _plateRepository = plateRepository;
         }
 
-        public Task<Plate> CreatePlateAsync(string registration, decimal purchasePrice, decimal salePrice, string letters, int numbers)
+        public async Task<Plate> CreatePlateAsync(string registration, decimal purchasePrice, decimal salePrice, string letters, int numbers)
         {
-            throw new NotImplementedException();
+            var plate = new Plate(registration, purchasePrice, salePrice, letters, numbers);
+            return await _plateRepository.AddPlateAsync(plate);
         }
 
         public async Task<Plate?> GetPlateByIdAsync(Guid id)

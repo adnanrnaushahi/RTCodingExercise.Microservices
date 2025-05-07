@@ -1,4 +1,5 @@
 ﻿using WebMVC.Services;
+using WebMVC.ViewModels;
 
 namespace WebMVC.Controllers
 {
@@ -32,6 +33,41 @@ namespace WebMVC.Controllers
                 _logger.LogError(ex, "Error retrieving plate details");
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreatePlateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (model.SalePrice < model.PurchasePrice * 1.2m)
+                    {
+                        // If the 20% markup rule is not met, add a model error
+                        ModelState.AddModelError("SalePrice", "Sale price must include at least 20% markup over purchase price.");
+                        return View(model);
+                    }
+
+                    await _plateService.CreatePlateAsync(model);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error creating plate");
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+
+            return View(model);
         }
     }
 }

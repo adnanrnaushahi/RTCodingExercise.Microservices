@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using Catalog.Domain.Enum;
-using WebMVC.Models;
+using WebMVC.ViewModels;
 
 namespace WebMVC.Utils
 {

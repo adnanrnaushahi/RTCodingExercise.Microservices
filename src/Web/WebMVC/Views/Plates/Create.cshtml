@@ -1,0 +1,62 @@
+﻿@model CreatePlateViewModel
+@{
+    ViewData["Title"] = "Add New Plate";
+}
+<div class="container">
+    <h1 class="my-4">Add New Plate</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Registration" class="form-label">Registration</label>
+                            <input asp-for="Registration" class="form-control" />
+                            <span asp-validation-for="Registration" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Letters" class="form-label">Letters</label>
+                            <input asp-for="Letters" class="form-control" />
+                            <span asp-validation-for="Letters" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Numbers" class="form-label">Numbers</label>
+                            <input asp-for="Numbers" class="form-control" type="number" />
+                            <span asp-validation-for="Numbers" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PurchasePrice" class="form-label">Purchase Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">£</span>
+                                <input asp-for="PurchasePrice" class="form-control" type="number" step="0.01" />
+                            </div>
+                            <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SalePrice" class="form-label">Sale Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">£</span>
+                                <input asp-for="SalePrice" class="form-control" type="number" step="0.01" />
+                            </div>
+                            <small class="form-text text-muted">Sale price must include at least 20% markup (including VAT).</small><br />
+                            <span asp-validation-for="SalePrice" class="text-danger"></span>
+                            
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

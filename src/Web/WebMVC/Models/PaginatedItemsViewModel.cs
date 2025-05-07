@@ -1,5 +1,5 @@
 ﻿
-namespace WebMVC.Models
+namespace WebMVC.ViewModels
 {
     public class PaginatedItemsViewModel<T> where T : class
     {

@@ -1,4 +1,4 @@
-﻿using WebMVC.Models;
+﻿using WebMVC.ViewModels;
 
 namespace WebMVC.Services
 {
@@ -6,5 +6,6 @@ namespace WebMVC.Services
     {
         Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex);
         Task<PlateViewModel> GetPlateByIdAsync(Guid id);
+        Task<PlateViewModel> CreatePlateAsync(CreatePlateViewModel model);
     }
 }
