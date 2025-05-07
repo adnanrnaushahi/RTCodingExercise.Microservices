@@ -20,7 +20,7 @@ namespace WebMVC.Services
         {
             var uri = new Uri($"{_catalogApiUrl}/api/plates");
             var response = await _httpClient.GetAsync(uri);
-            6response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
             var plates = JsonSerializer.Deserialize<IEnumerable<PlateViewModel>>(content,
