@@ -53,7 +53,6 @@ namespace Catalog.API
 
             // Register repositories
             services.AddScoped<IPlateRepository, PlateRepository>();
-            services.AddScoped<IPlateDetailRepository, PlateDetailRepository>();
 
             // Register services
             services.AddScoped<IPlateService, PlateService>();

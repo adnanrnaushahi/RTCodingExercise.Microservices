@@ -5,24 +5,27 @@ namespace Catalog.API.Services
     public class PlateService : IPlateService
     {
         private readonly IPlateRepository _plateRepository;
-        private readonly IPlateDetailRepository _plateDetailRepository;
-        private readonly ILogger<PlateService> _logger;
 
-        public PlateService(IPlateRepository plateRepository, IPlateDetailRepository plateDetailRepository, ILogger<PlateService> logger)
+        public PlateService(IPlateRepository plateRepository)
         {
             _plateRepository = plateRepository;
-            _plateDetailRepository = plateDetailRepository;
-            _logger = logger;
         }
 
-        public async Task<IEnumerable<Plate>> GetAllPlatesAsync()
+        public Task<Plate> CreatePlateAsync(string registration, decimal purchasePrice, decimal salePrice, string letters, int numbers)
         {
-            return await _plateRepository.GetAllPlatesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<Plate?> GetPlateByIdAsync(Guid id)
         {
             return await _plateRepository.GetPlateByIdAsync(id);
+        }
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex)
+        {
+            var plates = await _plateRepository.GetPlatesAsync(pageSize, pageIndex);
+            var totalCount = await _plateRepository.GetTotalPlatesCountAsync();
+            return (plates, totalCount);
         }
     }
 }

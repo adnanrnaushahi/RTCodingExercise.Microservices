@@ -1,37 +1,27 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using WebMVC.Models;
+﻿using WebMVC.Models;
+using WebMVC.Utils;
 
 namespace WebMVC.Services
 {
     public class PlateService : IPlateService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<PlateService> _logger;
         private readonly string _catalogApiUrl;
 
-        public PlateService(HttpClient httpClient, IOptions<AppSettings> settings, ILogger<PlateService> logger)
+        public PlateService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
             _httpClient = httpClient;
-            _logger = logger;
             _catalogApiUrl = settings.Value.CatalogApiUrl;
         }
 
-        public async Task<IEnumerable<PlateViewModel>> GetAllPlatesAsync()
+        public async Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex)
         {
-            var uri = new Uri($"{_catalogApiUrl}/api/plates");
+            var uri = new Uri($"{_catalogApiUrl}/api/plates?pageSize={pageSize}&pageIndex={pageIndex}");
             var response = await _httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var plates = JsonSerializer.Deserialize<IEnumerable<PlateViewModel>>(content,
-             new JsonSerializerOptions
-             {
-                 PropertyNameCaseInsensitive = true,
-                 Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
-             });
-
-            return plates;
+            return JsonConverterUtils.ToPaginatedPlatesViewModel(content);
         }
 
         public async Task<PlateViewModel> GetPlateByIdAsync(Guid id)
@@ -41,10 +31,7 @@ namespace WebMVC.Services
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var plate = JsonSerializer.Deserialize<PlateViewModel>(content,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            return plate;
+            return JsonConverterUtils.ToPlateViewModel(content);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace WebMVC.Controllers
     {
         private readonly IPlateService _plateService;
         private readonly ILogger<PlatesController> _logger;
+        private const int DefaultPageSize = 20;
 
         public PlatesController(IPlateService plateService, ILogger<PlatesController> logger)
         {
@@ -13,9 +14,9 @@ namespace WebMVC.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageIndex = 0)
         {            
-            var plates = await _plateService.GetAllPlatesAsync();
+            var plates = await _plateService.GetAllPlatesAsync(DefaultPageSize, pageIndex);
             return View(plates);            
         }
 

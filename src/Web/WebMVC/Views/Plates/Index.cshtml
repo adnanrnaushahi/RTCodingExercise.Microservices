@@ -1,12 +1,13 @@
-﻿@model IEnumerable<WebMVC.Models.PlateViewModel>
-@{
-    ViewData["Title"] = "Registration Plates";
-}
+﻿@model WebMVC.Models.PaginatedItemsViewModel<WebMVC.Models.PlateViewModel>
 <div class="container">
-    <h1 class="my-4">Registration Plates</h1>
-    <div class="mb-4">
-        <a asp-action="Available" class="btn btn-outline-primary">Available Plates</a>
-        <a asp-action="Search" class="btn btn-outline-secondary">Add New</a>
+    <div class="my-4 d-flex justify-content-between align-items-center">
+        <h3>Registration Plates</h3>
+    </div>
+    <div class="mb-4 d-flex justify-content-between">
+        <div>
+            <a asp-action="Create" class="btn btn-outline-secondary">Add New</a>
+        </div>
+        
     </div>
 
     <div class="table-responsive">
@@ -22,22 +23,46 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var plate in Model)
+                @foreach (var plate in Model.Data)
                 {
                     <tr>
                         <td><strong>@plate.Registration</strong></td>
                         <td>@plate.Letters</td>
                         <td>@plate.Numbers</td>
-                        <td>£@plate.SalePrice.ToString("N2")</td>
                         <td>
-                            @plate.Status.ToString()
+                            
+                           <span>£@plate.SalePrice.ToString("N2")</span>
+                            
                         </td>
                         <td>
-                            <a asp-controller="Plates" asp-action="Details" asp-route-id="@plate.Id" class="btn btn-primary">Details</a>
+                            <span class="badge @(plate.Status == Catalog.Domain.Enum.PlateStatus.Available ? "bg-success" : plate.Status == Catalog.Domain.Enum.PlateStatus.Reserved ? "bg-warning" : "bg-danger")">
+                                @plate.Status.ToString()
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@plate.Id" class="btn btn-primary btn-sm">Details</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-promoCode="@ViewBag.PromoCode">Previous</a>
+            </li>
+            @for (int i = 0; i < Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pageIndex="@i" asp-route-promoCode="@ViewBag.PromoCode">@(i + 1)</a>
+                </li>
+            }
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-promoCode="@ViewBag.PromoCode">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>

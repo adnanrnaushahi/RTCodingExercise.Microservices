@@ -28,9 +28,13 @@ namespace Catalog.API.Repositories
             }
         }
 
-        public async Task<IEnumerable<Plate>> GetAllPlatesAsync()
+        public async Task<IEnumerable<Plate>> GetPlatesAsync(int pageSize, int pageIndex)
         {
-            return await _dbContext.Plates.ToListAsync();
+            return await _dbContext.Plates
+                .OrderBy(p => p.Registration)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<Plate?> GetPlateByIdAsync(Guid id)
@@ -43,5 +47,11 @@ namespace Catalog.API.Repositories
             _dbContext.Entry(plate).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<int> GetTotalPlatesCountAsync()
+        {
+            return await _dbContext.Plates.CountAsync();
+        }
+       
     }
 }

@@ -4,7 +4,7 @@ namespace WebMVC.Services
 {
     public interface IPlateService
     {
-        Task<IEnumerable<PlateViewModel>> GetAllPlatesAsync();
+        Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex);
         Task<PlateViewModel> GetPlateByIdAsync(Guid id);
     }
 }

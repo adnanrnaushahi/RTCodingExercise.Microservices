@@ -17,10 +17,16 @@ namespace Catalog.API.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<PlateDto>>> GetPlates()
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> GetPlates(int pageSize = 20, int pageIndex = 0)
         {
-            var plates = await _plateService.GetAllPlatesAsync();
-            return Ok(Mappers.PlateMapper.MapToPlateDto(plates));
+            var response = await _plateService.GetPlatesAsync(pageSize, pageIndex);
+            return Ok(new PaginatedItemsDto<PlateDto>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Count = response.TotalCount,
+                Data = Mappers.PlateMapper.MapToPlateDto(response.Plates.ToList())
+            });
         }
 
         [HttpGet("{id}")]
