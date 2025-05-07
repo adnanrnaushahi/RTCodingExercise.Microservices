@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.DTO
+﻿using Catalog.Domain.Enum;
+
+namespace Catalog.API.DTO
 {
     public class PlateDto
     {
@@ -8,6 +10,6 @@
         public decimal SalePrice { get; set; }
         public string Letters { get; set; }
         public int Numbers { get; set; }
-        public bool IsAvailable { get; set; }
+        public PlateStatus Status { get; set; }
     }
 }

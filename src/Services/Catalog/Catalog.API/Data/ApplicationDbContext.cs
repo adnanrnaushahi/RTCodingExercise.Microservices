@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System.Security.Principal;
-using Catalog.Domain.Entities;
+﻿using Catalog.Domain.Entities;
 
 namespace Catalog.API.Data
 {
@@ -12,7 +10,6 @@ namespace Catalog.API.Data
         }
 
         public DbSet<Plate> Plates { get; set; }
-        public DbSet<PlateDetail> PlateDetails { get; set; }
 
     }
 }

@@ -4,7 +4,7 @@ namespace Catalog.API.Mappers
 {
     public static class PlateMapper
     {
-        public static PlateDto MapToPlateDto(Domain.Entities.Plate plate, Domain.Entities.PlateDetail? plateDetail = null)
+        public static PlateDto MapToPlateDto(Domain.Entities.Plate plate)
         {
             return new PlateDto
             {
@@ -14,7 +14,7 @@ namespace Catalog.API.Mappers
                 SalePrice = plate.SalePrice,
                 Letters = plate.Letters,
                 Numbers = plate.Numbers,
-                IsAvailable = !plateDetail?.IsSold ?? true
+                Status = plate.Status
             };
         }
 

@@ -22,5 +22,18 @@ namespace Catalog.API.Controllers
             var plates = await _plateService.GetAllPlatesAsync();
             return Ok(Mappers.PlateMapper.MapToPlateDto(plates));
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PlateDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<PlateDto>> GetPlateById(Guid id)
+        {
+            var plate = await _plateService.GetPlateByIdAsync(id);
+
+            if (plate == null)
+                return NotFound();
+
+            return Ok(Mappers.PlateMapper.MapToPlateDto(plate));
+        }
     }
 }
