@@ -17,7 +17,17 @@ namespace RTCodingExercise.WebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+             .AddControllers()
+             .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; })
+             .AddNewtonsoftJson(
+                 options =>
+                 {
+                     options.SerializerSettings.Culture = new System.Globalization.CultureInfo("en-GB");
+                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                     options.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None;
+                 });
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddHttpClient<IPlateService, PlateService>();

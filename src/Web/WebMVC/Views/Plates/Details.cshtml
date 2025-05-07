@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = $"Plate Details - {Model.Registration}";
+}
+
+<div class="container">
+    <h1 class="my-4">Plate Details</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>@Model.Registration</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Registration</dt>
+                        <dd class="col-sm-8">@Model.Registration</dd>
+
+                        <dt class="col-sm-4">Letters</dt>
+                        <dd class="col-sm-8">@Model.Letters</dd>
+
+                        <dt class="col-sm-4">Numbers</dt>
+                        <dd class="col-sm-8">@Model.Numbers</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Purchase Price</dt>
+                        <dd class="col-sm-8">£@Model.PurchasePrice.ToString("N2")</dd>
+
+                        <dt class="col-sm-4">Sale Price</dt>
+                        <dd class="col-sm-8">£@Model.SalePrice.ToString("N2")</dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge @(Model.Status.ToString() == "Available" ? "bg-success" : "bg-danger")">
+                                @Model.Status.ToString()
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

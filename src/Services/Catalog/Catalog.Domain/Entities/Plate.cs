@@ -1,4 +1,6 @@
-﻿namespace Catalog.Domain.Entities
+﻿using Catalog.Domain.Enum;
+
+namespace Catalog.Domain.Entities
 {
     public class Plate
     {
@@ -13,5 +15,7 @@
         public string? Letters { get; set; }
 
         public int Numbers { get; set; }
+
+        public PlateStatus Status { get; set; } = PlateStatus.Available;
     }
 }

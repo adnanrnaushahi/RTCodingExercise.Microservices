@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using WebMVC.Models;
 
 namespace WebMVC.Services
@@ -24,9 +25,26 @@ namespace WebMVC.Services
 
             var content = await response.Content.ReadAsStringAsync();
             var plates = JsonSerializer.Deserialize<IEnumerable<PlateViewModel>>(content,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+             new JsonSerializerOptions
+             {
+                 PropertyNameCaseInsensitive = true,
+                 Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+             });
 
             return plates;
+        }
+
+        public async Task<PlateViewModel> GetPlateByIdAsync(Guid id)
+        {
+            var uri = new Uri($"{_catalogApiUrl}/api/plates/{id}");
+            var response = await _httpClient.GetAsync(uri);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var plate = JsonSerializer.Deserialize<PlateViewModel>(content,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return plate;
         }
     }
 }

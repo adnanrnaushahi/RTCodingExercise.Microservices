@@ -1,29 +1,35 @@
-﻿using System.Diagnostics;
-using RTCodingExercise.Microservices.Models;
-using WebMVC.Services;
+﻿using WebMVC.Services;
 
 namespace WebMVC.Controllers
 {
     public class PlatesController : Controller
     {
         private readonly IPlateService _plateService;
+        private readonly ILogger<PlatesController> _logger;
 
-        public PlatesController(IPlateService plateService)
+        public PlatesController(IPlateService plateService, ILogger<PlatesController> logger)
         {
-            _plateService = plateService;           
+            _plateService = plateService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
+        {            
+            var plates = await _plateService.GetAllPlatesAsync();
+            return View(plates);            
+        }
+
+        public async Task<IActionResult> Details(Guid id)
         {
             try
             {
-                var plates = await _plateService.GetAllPlatesAsync();
-                return View(plates);
+                var plate = await _plateService.GetPlateByIdAsync(id);
+                return View(plate);
             }
             catch (Exception ex)
             {
-                // log exception here
-                return RedirectToAction("Error");
+                _logger.LogError(ex, "Error retrieving plate details");
+                return RedirectToAction(nameof(Index));
             }
         }
     }

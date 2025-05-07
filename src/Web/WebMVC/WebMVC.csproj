@@ -33,6 +33,7 @@
 		<PackageReference Include="MassTransit" Version="7.2.1" />
 		<PackageReference Include="MassTransit.AspNetCore" Version="7.2.1" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="7.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.23" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace WebMVC.Models
+﻿using Catalog.Domain.Enum;
+
+namespace WebMVC.Models
 {
     public class PlateViewModel
     {
@@ -8,6 +10,6 @@
         public decimal SalePrice { get; set; }
         public string Letters { get; set; }
         public int Numbers { get; set; }
-        public bool IsAvailable { get; set; }
+        public PlateStatus Status { get; set; }
     }
 }
