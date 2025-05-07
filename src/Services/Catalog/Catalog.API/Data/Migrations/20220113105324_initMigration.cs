@@ -21,12 +21,27 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_Plates", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "PlateDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlateId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsSold = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlateDetails", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Plates");
+            migrationBuilder.DropTable(
+               name: "PlateDetails");
         }
     }
 }

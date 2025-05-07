@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.Data;
+using System.Security.Principal;
 using Catalog.Domain.Entities;
 
 namespace Catalog.API.Data
@@ -13,18 +14,5 @@ namespace Catalog.API.Data
         public DbSet<Plate> Plates { get; set; }
         public DbSet<PlateDetail> PlateDetails { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<PlateDetail>(entity =>
-            {
-                entity.HasKey(m => m.Id);
-                entity.HasOne<Plate>()
-                    .WithMany()
-                    .HasForeignKey(m => m.PlateId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-        }
     }
 }

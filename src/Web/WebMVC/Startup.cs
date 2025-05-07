@@ -59,7 +59,7 @@ namespace RTCodingExercise.WebMVC
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Plates/Error");
             }
 
             var pathBase = Configuration["PATH_BASE"];
@@ -69,7 +69,7 @@ namespace RTCodingExercise.WebMVC
             }
 
             app.UseStaticFiles();
-            app.UseForwardedHeaders();
+            app.UseForwardedHeaders();  
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

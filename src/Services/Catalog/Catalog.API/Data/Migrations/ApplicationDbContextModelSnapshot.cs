@@ -22,7 +22,7 @@ namespace Catalog.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Catalog.Domain.Plate", b =>
+            modelBuilder.Entity("Catalog.Domain.Entities.Plate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,6 +46,23 @@ namespace Catalog.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Plates");
+                });
+
+            modelBuilder.Entity("Catalog.Domain.Entities.PlateDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("PlateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlateDetails");
                 });
 #pragma warning restore 612, 618
         }

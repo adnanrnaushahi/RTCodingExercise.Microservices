@@ -5,7 +5,6 @@
         public Guid Id { get; set; }
 
         public Guid? PlateId { get; set; }
-
-        public bool IsAvailable { get; set; }
+        public bool IsSold { get; set; }
     }
 }

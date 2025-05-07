@@ -1,4 +1,6 @@
-﻿using WebMVC.Services;
+﻿using System.Diagnostics;
+using RTCodingExercise.Microservices.Models;
+using WebMVC.Services;
 
 namespace WebMVC.Controllers
 {
@@ -8,14 +10,21 @@ namespace WebMVC.Controllers
 
         public PlatesController(IPlateService plateService)
         {
-            _plateService = plateService;
-           
+            _plateService = plateService;           
         }
 
         public async Task<IActionResult> Index()
         {
-            var plates = await _plateService.GetAllPlatesAsync();
-            return View(plates);
+            try
+            {
+                var plates = await _plateService.GetAllPlatesAsync();
+                return View(plates);
+            }
+            catch (Exception ex)
+            {
+                // log exception here
+                return RedirectToAction("Error");
+            }
         }
     }
 }

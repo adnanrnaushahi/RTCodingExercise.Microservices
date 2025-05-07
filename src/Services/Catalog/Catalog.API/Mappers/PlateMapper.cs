@@ -14,7 +14,7 @@ namespace Catalog.API.Mappers
                 SalePrice = plate.SalePrice,
                 Letters = plate.Letters,
                 Numbers = plate.Numbers,
-                IsAvailable = plateDetail?.IsAvailable ?? true
+                IsAvailable = !plateDetail?.IsSold ?? true
             };
         }
 

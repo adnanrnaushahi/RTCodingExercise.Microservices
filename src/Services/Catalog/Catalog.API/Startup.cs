@@ -50,13 +50,14 @@ namespace Catalog.API
             });
 
             services.AddControllers();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
 
-            // Register repositories and services
+            // Register repositories
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<IPlateDetailRepository, PlateDetailRepository>();
-            services.AddTransient<IPlateService, PlateService>();
+
+            // Register services
+            services.AddScoped<IPlateService, PlateService>();
+
 
             services.AddMassTransit(x =>
             {
@@ -93,10 +94,7 @@ namespace Catalog.API
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
