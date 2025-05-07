@@ -49,9 +49,8 @@ namespace WebMVC.Controllers
             {
                 try
                 {
-                    if (model.SalePrice < model.PurchasePrice * 1.2m)
+                    if (!model.ValidateSalePrice())
                     {
-                        // If the 20% markup rule is not met, add a model error
                         ModelState.AddModelError("SalePrice", "Sale price must include at least 20% markup over purchase price.");
                         return View(model);
                     }

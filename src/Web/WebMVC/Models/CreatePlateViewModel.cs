@@ -32,7 +32,6 @@ namespace WebMVC.ViewModels
         [Display(Name = "Sale Price")]
         public decimal SalePrice { get; set; }
 
-        // This custom validation method ensures the 20% markup rule is followed
         public bool ValidateSalePrice()
         {
             if (PurchasePrice <= 0 || SalePrice <= 0)
