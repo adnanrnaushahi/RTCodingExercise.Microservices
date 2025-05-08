@@ -1,0 +1,93 @@
+﻿@model WebMVC.ViewModels.PaginatedItemsViewModel<WebMVC.ViewModels.PlateViewModel>
+
+@{
+    ViewData["Title"] = "Search Results";
+    string searchTypeText = ViewBag.SearchType switch
+    {
+        WebMVC.ViewModels.SearchType.Letters => "Letters",
+        WebMVC.ViewModels.SearchType.Numbers => "Numbers",
+        _ => "Any"
+    };
+}
+
+<div class="container">
+    <h3 class="my-4">Search Results for "@ViewBag.SearchTerm" (Search By: @searchTypeText)</h3>
+
+    <div class="mb-3">
+        <a asp-action="Search" class="btn btn-outline-primary">New Search</a>
+        <a asp-controller="Plates" asp-action="Index" class="btn btn-outline-secondary">Back to All Plates</a>
+    </div>
+
+    @if (Model.Data.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Registration</th>
+                        <th>Letters</th>
+                        <th>Numbers</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var plate in Model.Data)
+                    {
+                        <tr>
+                            <td><strong>@plate.Registration</strong></td>
+                            <td>@plate.Letters</td>
+                            <td>@plate.Numbers</td>
+                            <td>£@plate.SalePrice.ToString("N2")</td>
+                            <td>
+                                <span class="badge @(plate.Status == Catalog.Domain.Enum.PlateStatus.Available ? "bg-success" : plate.Status == Catalog.Domain.Enum.PlateStatus.Reserved ? "bg-warning" : "bg-danger")">
+                                    @plate.Status.ToString()
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@plate.Id" class="btn btn-primary btn-sm">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-action="SearchResults"
+                       asp-route-pageIndex="@(Model.PageIndex - 1)"
+                       asp-route-model.SearchTerm="@ViewBag.SearchTerm"
+                       asp-route-model.SearchType="@ViewBag.SearchType">Previous</a>
+                </li>
+                @for (int i = 0; i < Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="SearchResults"
+                           asp-route-pageIndex="@i"
+                           asp-route-model.SearchTerm="@ViewBag.SearchTerm"
+                           asp-route-model.SearchType="@ViewBag.SearchType">@(i + 1)</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-action="SearchResults"
+                       asp-route-pageIndex="@(Model.PageIndex + 1)"
+                       asp-route-model.SearchTerm="@ViewBag.SearchTerm"
+                       asp-route-model.SearchType="@ViewBag.SearchType">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No plates found matching your search criteria. Please try different search terms.
+        </div>
+    }
+</div>

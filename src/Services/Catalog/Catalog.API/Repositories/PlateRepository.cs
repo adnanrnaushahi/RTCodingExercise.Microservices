@@ -53,6 +53,57 @@ namespace Catalog.API.Repositories
         {
             return await _dbContext.Plates.CountAsync();
         }
+        
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByLettersAsync(string letters, int pageSize, int pageIndex)
+        {
+            if (string.IsNullOrWhiteSpace(letters))
+                return (await GetPlatesAsync(pageSize, pageIndex), await GetTotalPlatesCountAsync());
+
+            letters = letters.Trim().ToLower();
+
+            var plates = await _dbContext.Plates
+                .Where(p => p.Letters.ToLower().Contains(letters))
+                .OrderBy(p => p.Registration)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (plates, plates.Count);
+        }
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByNumbersAsync(string numbers, int pageSize, int pageIndex)
+        {
+            if (string.IsNullOrWhiteSpace(numbers))
+                return (await GetPlatesAsync(pageSize, pageIndex), await GetTotalPlatesCountAsync());
+
+            var plates = await _dbContext.Plates
+                .Where(p => p.Numbers.ToString().Contains(numbers))
+                .OrderBy(p => p.Registration)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (plates, plates.Count);
+        }
        
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> SearchPlatesAsync(string query, int pageSize, int pageIndex)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return (await GetPlatesAsync(pageSize, pageIndex), await GetTotalPlatesCountAsync());
+
+            query = query.Trim().ToLower();
+
+            var plates = await _dbContext.Plates
+                .Where(p => p.Registration.ToLower().Contains(query) ||
+                           p.Letters.ToLower().Contains(query) ||
+                           p.Numbers.ToString().Contains(query))
+                .OrderBy(p => p.Registration)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (plates, plates.Count);
+        }
     }
 }

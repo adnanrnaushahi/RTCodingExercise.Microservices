@@ -66,5 +66,60 @@ namespace Catalog.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // Add these methods to the PlatesController in Catalog.API
+        [HttpGet("filterByLetters")]
+        [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByLetters(
+            [FromQuery] string letters,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] int pageIndex = 0)
+        {
+            var response = await _plateService.GetPlatesByLettersAsync(letters, pageSize, pageIndex);
+
+            return Ok(new PaginatedItemsDto<PlateDto>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Count = response.TotalCount,
+                Data = Mappers.PlateMapper.MapToPlateDto(response.Plates.ToList())
+            });
+        }
+
+        [HttpGet("filterByNumbers")]
+        [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByNumbers(
+            [FromQuery] string numbers,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] int pageIndex = 0)
+        {
+            var response = await _plateService.GetPlatesByNumbersAsync(numbers, pageSize, pageIndex);
+
+            return Ok(new PaginatedItemsDto<PlateDto>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Count = response.TotalCount,
+                Data = Mappers.PlateMapper.MapToPlateDto(response.Plates.ToList())
+            });
+        }
+
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> Search(
+            [FromQuery] string query,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] int pageIndex = 0)
+        {
+            var response = await _plateService.SearchPlatesAsync(query, pageSize, pageIndex);
+
+            return Ok(new PaginatedItemsDto<PlateDto>
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Count = response.TotalCount,
+                Data = Mappers.PlateMapper.MapToPlateDto(response.Plates.ToList())
+            });
+        }
     }
 }

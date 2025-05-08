@@ -28,5 +28,20 @@ namespace Catalog.API.Services
             var totalCount = await _plateRepository.GetTotalPlatesCountAsync();
             return (plates, totalCount);
         }
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByLettersAsync(string letters, int pageSize, int pageIndex)
+        {
+            return await _plateRepository.GetPlatesByLettersAsync(letters, pageSize, pageIndex);
+        }
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByNumbersAsync(string numbers, int pageSize, int pageIndex)
+        {
+            return await _plateRepository.GetPlatesByNumbersAsync(numbers, pageSize, pageIndex);            
+        }
+
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> SearchPlatesAsync(string query, int pageSize, int pageIndex)
+        {
+            return await _plateRepository.SearchPlatesAsync(query, pageSize, pageIndex);
+        }
     }
 }

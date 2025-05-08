@@ -10,5 +10,8 @@ namespace Catalog.Domain.Interfaces
         Task DeletePlateAsync(Guid id);
         Task<Plate?> GetPlateByIdAsync(Guid id);
         Task<int> GetTotalPlatesCountAsync();
+        Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByLettersAsync(string letters, int pageSize, int pageIndex);
+        Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByNumbersAsync(string numbers, int pageSize, int pageIndex);
+        Task<(IEnumerable<Plate> Plates, int TotalCount)> SearchPlatesAsync(string query, int pageSize, int pageIndex);
     }
 }

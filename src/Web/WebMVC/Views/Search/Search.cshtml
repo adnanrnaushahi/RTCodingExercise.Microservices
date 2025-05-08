@@ -1,0 +1,45 @@
+﻿@model WebMVC.ViewModels.SearchViewModel
+
+@{
+    ViewData["Title"] = "Search Plates";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="text-center">Search Registration Plates</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SearchResults" method="post">
+                        <div class="mb-3">
+                            <label asp-for="SearchTerm" class="form-label">Enter Search Term:</label>
+                            <input asp-for="SearchTerm" class="form-control" placeholder="Enter name, initials, age, or any search term" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SearchType" class="form-label">Search By:</label>
+                            <select asp-for="SearchType" class="form-select">
+                                <option value="@SearchType.Any">Any (Letters, Numbers, or Registration)</option>
+                                <option value="@SearchType.Letters">Letters Only</option>
+                                <option value="@SearchType.Numbers">Numbers Only</option>
+                            </select>
+                            <div class="form-text">
+                                <ul class="mt-2 ps-3">
+                                    <li>Choose "Letters Only" if you're looking for plates with specific letters (e.g., your initials)</li>
+                                    <li>Choose "Numbers Only" if you're looking for plates with specific numbers (e.g., your age)</li>
+                                    <li>Choose "Any" to search across all fields</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
