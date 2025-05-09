@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHost", "WebHost", "{820A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{832C0F4F-1E9E-455D-88A0-F50801284952}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\BuildingBlocks\New folder\WebHost.Customization\WebHost.Customization.csproj", "{0B8D8977-58C0-47B7-9508-5DD68D1B2014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\BuildingBlocks\WebHost.Customization\WebHost.Customization.csproj", "{0B8D8977-58C0-47B7-9508-5DD68D1B2014}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "src\Services\Catalog\Catalog.UnitTests\Catalog.UnitTests.csproj", "{D542A113-5EFD-467D-82F6-0007A10C57B5}"
 EndProject

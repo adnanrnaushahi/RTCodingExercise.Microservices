@@ -10,6 +10,6 @@ namespace Catalog.API.Data
         }
 
         public DbSet<Plate> Plates { get; set; }
-
+        public DbSet<StatusChangeLog> StatusChangeLogs { get; set; }
     }
 }

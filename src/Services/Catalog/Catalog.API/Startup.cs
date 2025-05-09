@@ -1,4 +1,5 @@
-﻿using Catalog.API.Repositories;
+﻿using Catalog.API.EventBus.Consumers;
+using Catalog.API.Repositories;
 using Catalog.API.Services;
 using Catalog.Domain.Interfaces;
 using MassTransit;
@@ -53,14 +54,14 @@ namespace Catalog.API
 
             // Register repositories
             services.AddScoped<IPlateRepository, PlateRepository>();
+            services.AddScoped<IStatusChangeLogRepository, StatusChangeLogRepository>();
 
             // Register services
             services.AddScoped<IPlateService, PlateService>();
 
-
             services.AddMassTransit(x =>
             {
-                //x.AddConsumer<ConsumerClass>();
+                x.AddConsumer<PlateStatusChangedConsumer>();
 
                 //ADD CONSUMERS HERE
                 x.UsingRabbitMq((context, cfg) =>

@@ -1,4 +1,5 @@
-﻿using WebMVC.ViewModels;
+﻿using Catalog.Domain.Enum;
+using WebMVC.ViewModels;
 
 namespace WebMVC.Services
 {
@@ -10,5 +11,6 @@ namespace WebMVC.Services
         Task<PaginatedItemsViewModel<PlateViewModel>> FilterByLettersAsync(string letters, int pageSize, int pageIndex);
         Task<PaginatedItemsViewModel<PlateViewModel>> FilterByNumbersAsync(string numbers, int pageSize, int pageIndex);
         Task<PaginatedItemsViewModel<PlateViewModel>> SearchPlatesAsync(string query, int pageSize, int pageIndex);
+        Task<PlateViewModel> UpdatePlateStatusAsync(Guid id, PlateStatus newStatus);
     }
 }

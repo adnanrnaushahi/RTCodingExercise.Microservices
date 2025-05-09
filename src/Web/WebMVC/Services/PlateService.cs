@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using Catalog.Domain.Enum;
 using WebMVC.Utils;
 using WebMVC.ViewModels;
 
@@ -80,6 +81,17 @@ namespace WebMVC.Services
 
             var content = await response.Content.ReadAsStringAsync();
             return JsonConverterUtils.ToPaginatedPlatesViewModel(content);
+        }
+
+        public async Task<PlateViewModel> UpdatePlateStatusAsync(Guid id, PlateStatus newStatus)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(newStatus), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"{_catalogApiUrl}/api/plates/{id}/status", content);
+            response.EnsureSuccessStatusCode();
+
+            var plateContent = await response.Content.ReadAsStringAsync();
+            return JsonConverterUtils.ToPlateViewModel(plateContent);
         }
     }
 }

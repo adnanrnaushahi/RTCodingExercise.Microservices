@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using Catalog.API.DTO;
+using Catalog.Domain.Entities;
+using Catalog.Domain.Enum;
 using Catalog.Domain.Interfaces;
 
 namespace Catalog.API.Controllers
@@ -70,10 +72,7 @@ namespace Catalog.API.Controllers
         // Add these methods to the PlatesController in Catalog.API
         [HttpGet("filterByLetters")]
         [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByLetters(
-            [FromQuery] string letters,
-            [FromQuery] int pageSize = 20,
-            [FromQuery] int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByLetters(string letters, int pageSize = 20, int pageIndex = 0)
         {
             var response = await _plateService.GetPlatesByLettersAsync(letters, pageSize, pageIndex);
 
@@ -88,10 +87,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet("filterByNumbers")]
         [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByNumbers(
-            [FromQuery] string numbers,
-            [FromQuery] int pageSize = 20,
-            [FromQuery] int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByNumbers(string numbers, int pageSize = 20, int pageIndex = 0)
         {
             var response = await _plateService.GetPlatesByNumbersAsync(numbers, pageSize, pageIndex);
 
@@ -106,10 +102,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet("search")]
         [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> Search(
-            [FromQuery] string query,
-            [FromQuery] int pageSize = 20,
-            [FromQuery] int pageIndex = 0)
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> Search(string query, int pageSize = 20, int pageIndex = 0)
         {
             var response = await _plateService.SearchPlatesAsync(query, pageSize, pageIndex);
 
@@ -120,6 +113,31 @@ namespace Catalog.API.Controllers
                 Count = response.TotalCount,
                 Data = Mappers.PlateMapper.MapToPlateDto(response.Plates.ToList())
             });
+        }
+
+        [HttpPut("{id}/status")]
+        [ProducesResponseType(typeof(Plate), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Plate>> UpdatePlateStatus(Guid id, [FromBody] PlateStatus status)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var plate = await _plateService.UpdatePlateStatusAsync(id, status);
+                return Ok(plate);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating plate status for {PlateId}", id);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

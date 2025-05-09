@@ -1,4 +1,5 @@
 ﻿using Catalog.Domain.Entities;
+using Catalog.Domain.Enum;
 
 namespace Catalog.Domain.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Catalog.Domain.Interfaces
         Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByLettersAsync(string letters, int pageSize, int pageIndex);
         Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesByNumbersAsync(string numbers, int pageSize, int pageIndex);
         Task<(IEnumerable<Plate> Plates, int TotalCount)> SearchPlatesAsync(string query, int pageSize, int pageIndex);
+        Task<Plate> UpdatePlateStatusAsync(Guid plateId, PlateStatus newStatus);
     }
 }

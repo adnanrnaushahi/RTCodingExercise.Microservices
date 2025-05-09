@@ -62,7 +62,8 @@ namespace Catalog.API.Repositories
             letters = letters.Trim().ToLower();
 
             var plates = await _dbContext.Plates
-                .Where(p => p.Letters.ToLower().Contains(letters))
+                .Where(p => p.Letters.ToLower().Contains(letters) && 
+                    p.Status == Domain.Enum.PlateStatus.Available)
                 .OrderBy(p => p.Registration)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
@@ -77,7 +78,8 @@ namespace Catalog.API.Repositories
                 return (await GetPlatesAsync(pageSize, pageIndex), await GetTotalPlatesCountAsync());
 
             var plates = await _dbContext.Plates
-                .Where(p => p.Numbers.ToString().Contains(numbers))
+                .Where(p => p.Numbers.ToString().Contains(numbers) && 
+                p.Status == Domain.Enum.PlateStatus.Available)
                 .OrderBy(p => p.Registration)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
@@ -95,9 +97,10 @@ namespace Catalog.API.Repositories
             query = query.Trim().ToLower();
 
             var plates = await _dbContext.Plates
-                .Where(p => p.Registration.ToLower().Contains(query) ||
+                .Where(p => (p.Registration.ToLower().Contains(query) ||
                            p.Letters.ToLower().Contains(query) ||
-                           p.Numbers.ToString().Contains(query))
+                           p.Numbers.ToString().Contains(query)) && 
+                           p.Status == Domain.Enum.PlateStatus.Available)
                 .OrderBy(p => p.Registration)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)

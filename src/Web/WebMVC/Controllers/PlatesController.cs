@@ -1,4 +1,5 @@
-﻿using WebMVC.Services;
+﻿using Catalog.Domain.Enum;
+using WebMVC.Services;
 using WebMVC.ViewModels;
 
 namespace WebMVC.Controllers
@@ -69,6 +70,75 @@ namespace WebMVC.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet("UpdateStatus/{id}")]
+        public async Task<IActionResult> UpdateStatus(Guid id)
+        {
+            var plate = await _plateService.GetPlateByIdAsync(id);
+
+            if (plate == null)
+                return NotFound();
+
+            var viewModel = new UpdatePlateStatusViewModel
+            {
+                PlateId = plate.Id,
+                Registration = plate.Registration,
+                NewStatus = plate.Status,
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> ReservePlate(Guid id)
+        {
+            try
+            {
+                var currentUser = User.Identity?.Name ?? "System";
+                await _plateService.UpdatePlateStatusAsync(id, PlateStatus.Reserved);
+                TempData["SuccessMessage"] = "Plate successfully reserved";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reserving plate {PlateId}", id);
+                TempData["ErrorMessage"] = "Error reserving plate";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> MakeThisPlateAvailable(Guid id)
+        {
+            try
+            {
+                var currentUser = User.Identity?.Name ?? "System";
+                await _plateService.UpdatePlateStatusAsync(id, PlateStatus.Available);
+                TempData["SuccessMessage"] = "Plate marked as available";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error making plate {PlateId} available", id);
+                TempData["ErrorMessage"] = "Error updating plate status";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> SellThisPlate(Guid id)
+        {
+            try
+            {
+                var currentUser = User.Identity?.Name ?? "System";
+                await _plateService.UpdatePlateStatusAsync(id, PlateStatus.Sold);
+                TempData["SuccessMessage"] = "Plate marked as sold";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error marking plate {PlateId} as sold", id);
+                TempData["ErrorMessage"] = "Error updating plate status";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }
