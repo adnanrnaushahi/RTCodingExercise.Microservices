@@ -20,8 +20,9 @@ namespace WebMVC.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.PriceSortParam = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "";
+            GetTodayRevenue();
             var plates = await _plateService.GetAllPlatesAsync(DefaultPageSize, pageIndex, sortOrder == "price_desc" ? false : true);
-            return View(plates);            
+            return View(plates);
         }
 
         public async Task<IActionResult> Details(Guid id)
@@ -72,24 +73,6 @@ namespace WebMVC.Controllers
             return View(model);
         }
 
-        [HttpGet("UpdateStatus/{id}")]
-        public async Task<IActionResult> UpdateStatus(Guid id)
-        {
-            var plate = await _plateService.GetPlateByIdAsync(id);
-
-            if (plate == null)
-                return NotFound();
-
-            var viewModel = new UpdatePlateStatusViewModel
-            {
-                PlateId = plate.Id,
-                Registration = plate.Registration,
-                NewStatus = plate.Status,
-            };
-
-            return View(viewModel);
-        }
-
         public async Task<IActionResult> ReservePlate(Guid id)
         {
             try
@@ -107,7 +90,7 @@ namespace WebMVC.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        public async Task<IActionResult> MakeThisPlateAvailable(Guid id)
+        public async Task<IActionResult> MakeAvailable(Guid id)
         {
             try
             {
@@ -124,12 +107,14 @@ namespace WebMVC.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        public async Task<IActionResult> SellThisPlate(Guid id)
+        public async Task<IActionResult> MarkAsSold(Guid id)
         {
             try
             {
                 var currentUser = User.Identity?.Name ?? "System";
                 await _plateService.UpdatePlateStatusAsync(id, PlateStatus.Sold);
+
+                GetTodayRevenue();
                 TempData["SuccessMessage"] = "Plate marked as sold";
             }
             catch (Exception ex)
@@ -139,6 +124,34 @@ namespace WebMVC.Controllers
             }
 
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> Available(int pageIndex = 0, string sortOrder = "")
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.PriceSortParam = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "";
+
+            try
+            {
+                GetTodayRevenue();
+                var plates = await _plateService.GetAllPlatesAsync(DefaultPageSize, pageIndex, sortOrder == "price_desc" ? false : true, PlateStatus.Available);
+
+                return View(plates);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving available plates");
+                TempData["ErrorMessage"] = "Error retrieving available plates. Please try again.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        private async void GetTodayRevenue()
+        {
+            // Get total revenue and set in TempData
+            var revenue = await _plateService.GetTotalRevenueAsync();
+            TempData["TotalRevenue"] = revenue.TotalSalePrice;
+            TempData["AverageProfitMargin"] = revenue.AverageProfitMargin;
         }
     }
 }

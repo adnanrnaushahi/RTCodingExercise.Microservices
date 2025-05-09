@@ -2,6 +2,7 @@
 using Catalog.Domain.Entities;
 using Catalog.Domain.Enum;
 using Catalog.Domain.Interfaces;
+using Catalog.Domain.Models;
 using IntegrationEvents.Events;
 using MassTransit;
 namespace Catalog.API.Services
@@ -33,10 +34,10 @@ namespace Catalog.API.Services
             return await _plateRepository.GetPlateByIdAsync(id);
         }
 
-        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true)
+        public async Task<(IEnumerable<Plate> Plates, int TotalCount)> GetPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true, PlateStatus? status = null)
         {
-            var plates = await _plateRepository.GetPlatesAsync(pageSize, pageIndex, orderByAsc);
-            var totalCount = await _plateRepository.GetTotalPlatesCountAsync();
+            var plates = await _plateRepository.GetPlatesAsync(pageSize, pageIndex, orderByAsc, status);
+            var totalCount = await _plateRepository.GetTotalPlatesCountAsync(status);
             return (plates, totalCount);
         }
 
@@ -79,6 +80,11 @@ namespace Catalog.API.Services
             }
 
             return plate;
+        }
+
+        public async Task<Revenue> GetTotalRevenueAsync()
+        {
+            return await _plateRepository.GetTotalRevenueAsync();
         }
     }
 }

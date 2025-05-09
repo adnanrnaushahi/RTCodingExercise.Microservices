@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Catalog.Domain.Enum;
+using Catalog.Domain.Models;
 using WebMVC.Utils;
 using WebMVC.ViewModels;
 
@@ -17,9 +18,10 @@ namespace WebMVC.Services
             _catalogApiUrl = settings.Value.CatalogApiUrl;
         }
 
-        public async Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true)
+        public async Task<PaginatedItemsViewModel<PlateViewModel>> GetAllPlatesAsync(int pageSize, int pageIndex, bool orderByAsc = true, PlateStatus? status = null)
         {
-            var uri = new Uri($"{_catalogApiUrl}/api/plates?pageSize={pageSize}&pageIndex={pageIndex}&orderByAsc={orderByAsc}");
+            var statusParam = status.HasValue ? $"&status={status.Value}" : "";
+            var uri = new Uri($"{_catalogApiUrl}/api/plates?pageSize={pageSize}&pageIndex={pageIndex}&orderByAsc={orderByAsc}{statusParam}");
             var response = await _httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
@@ -92,6 +94,16 @@ namespace WebMVC.Services
 
             var plateContent = await response.Content.ReadAsStringAsync();
             return JsonConverterUtils.ToPlateViewModel(plateContent);
+        }
+
+        public async Task<RevenueViewModel> GetTotalRevenueAsync()
+        {
+            var uri = new Uri($"{_catalogApiUrl}/api/plates/GetRevenue");
+            var response = await _httpClient.GetAsync(uri);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConverterUtils.ToRevenueModel(content);
         }
     }
 }

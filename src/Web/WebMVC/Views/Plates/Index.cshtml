@@ -1,6 +1,14 @@
 ﻿@model WebMVC.ViewModels.PaginatedItemsViewModel<WebMVC.ViewModels.PlateViewModel>
 <div class="container">
-    <div class="my-4 d-flex justify-content-between align-items-center">
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white  mb-3">
+                <div class="card-header bg-success">Total Revenue : <b>£@(TempData["TotalRevenue"]?.ToString() ?? "0.00")</b></div>
+                <div class="card-header bg-warning">Average Profit Margin : <b>@(TempData["AverageProfitMargin"]?.ToString() ?? "0.00")%</b></div>
+            </div>
+        </div>
+    </div>
+    <div class="my-4 d-flex justify-content-between align-items-center">        
         <h3>Registration Plates</h3>
     </div>
 

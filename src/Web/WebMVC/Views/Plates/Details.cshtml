@@ -42,26 +42,26 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-footer">
+		<div class="card-footer text-center">
 			<a asp-action="Index" class="btn btn-secondary">Back to List</a>
 
 			@if (Model.Status == PlateStatus.Available)
 			{
 				<a asp-controller="Plates" asp-action="ReservePlate" asp-route-id="@Model.Id" class="btn btn-warning">
-					<i class="fas fa-edit"></i> Reserve This Plate
+					<i class="fas fa-edit"></i> Reserve It
 				</a>
 			}
 			else if (Model.Status == PlateStatus.Reserved)
 			{
-				<a asp-controller="Plates" asp-action="MakeThisPlateAvailable" asp-route-id="@Model.Id" class="btn btn-success">
+				<a asp-controller="Plates" asp-action="MakeAvailable" asp-route-id="@Model.Id" class="btn btn-success">
 					<i class="fas fa-check"></i> Make It Available
 				</a>
 			}
 
 			@if (Model.Status != PlateStatus.Sold)
 			{
-				<a asp-controller="Plates" asp-action="SellThisPlate" asp-route-id="@Model.Id" class="btn btn-danger">
-					<i class="fas fa-shopping-cart"></i> Buy
+				<a asp-controller="Plates" asp-action="MarkAsSold" asp-route-id="@Model.Id" class="btn btn-danger">
+					<i class="fas fa-shopping-cart"></i> Mark As Sold
 				</a>
 			}
 		</div>

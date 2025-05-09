@@ -21,9 +21,9 @@ namespace Catalog.API.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PlateDto>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> GetPlates(int pageSize = 20, int pageIndex = 0, bool orderByAsc = true)
+        public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> GetPlates(int pageSize = 20, int pageIndex = 0, bool orderByAsc = true, PlateStatus? status = null)
         {
-            var response = await _plateService.GetPlatesAsync(pageSize, pageIndex, orderByAsc);
+            var response = await _plateService.GetPlatesAsync(pageSize, pageIndex, orderByAsc, status);
             return Ok(new PaginatedItemsDto<PlateDto>
             {
                 PageIndex = pageIndex,
@@ -136,6 +136,22 @@ namespace Catalog.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating plate status for {PlateId}", id);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("GetRevenue")]
+        [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
+        public async Task<ActionResult<decimal>> GetRevenue()
+        {
+            try
+            {
+                var totalRevenue = await _plateService.GetTotalRevenueAsync();
+                return Ok(totalRevenue);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving total revenue");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+using System.Xml.Linq;
 using Catalog.Domain.Enum;
+using Catalog.Domain.Models;
 using WebMVC.ViewModels;
 
 namespace WebMVC.Utils
@@ -52,6 +54,16 @@ namespace WebMVC.Utils
         {
             var jsonDocument = JsonDocument.Parse(jsonContent);
             return ToPlateViewModel(jsonDocument.RootElement);
+        }
+
+        public static RevenueViewModel ToRevenueModel(string jsonContent)
+        {
+            var jsonDocument = JsonDocument.Parse(jsonContent);
+            return new RevenueViewModel            
+            {
+                AverageProfitMargin = jsonDocument.RootElement.GetProperty("averageProfitMargin").GetDecimal(),
+                TotalSalePrice = jsonDocument.RootElement.GetProperty("totalSalePrice").GetDecimal(),
+            };
         }
     }
 }
