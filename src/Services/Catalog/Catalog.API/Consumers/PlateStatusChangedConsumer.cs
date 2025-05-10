@@ -3,7 +3,7 @@ using Catalog.Domain.Interfaces;
 using IntegrationEvents.Events;
 using MassTransit;
 
-namespace Catalog.API.EventBus.Consumers
+namespace Catalog.API.Consumers
 {
     public class PlateStatusChangedConsumer : IConsumer<PlateStatusChangedEvent>
     {

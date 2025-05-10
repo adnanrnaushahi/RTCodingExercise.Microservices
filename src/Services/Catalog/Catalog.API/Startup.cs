@@ -1,4 +1,4 @@
-﻿using Catalog.API.EventBus.Consumers;
+﻿using Catalog.API.Consumers;
 using Catalog.API.Repositories;
 using Catalog.API.Services;
 using Catalog.Domain.Interfaces;

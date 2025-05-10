@@ -32,7 +32,16 @@ namespace WebMVC.Services
                 throw new HttpRequestException($"Error getting all plates: {response.StatusCode}, {errorContent}");
             }
 
-            return JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+            var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+
+            return new PaginatedItemsViewModel<PlateViewModel>
+            {
+                PageIndex = result.PageIndex,
+                PageSize = result.PageSize,
+                TotalItems = result.TotalItems,
+                TotalPages = (int)Math.Ceiling(result.TotalItems / (double)result.PageSize),
+                Data = result.Data.ToList()
+            };
         }
 
         public async Task<PlateViewModel> GetPlateByIdAsync(Guid id)
@@ -74,7 +83,16 @@ namespace WebMVC.Services
                 throw new HttpRequestException($"Error filtering plates by letters: {response.StatusCode}, {errorContent}");
             }
 
-            return JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+            var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+
+            return new PaginatedItemsViewModel<PlateViewModel>
+            {
+                PageIndex = result.PageIndex,
+                PageSize = result.PageSize,
+                TotalItems = result.TotalItems,
+                TotalPages = (int)Math.Ceiling(result.TotalItems / (double)result.PageSize),
+                Data = result.Data.ToList()
+            };
         }
 
         public async Task<PaginatedItemsViewModel<PlateViewModel>> FilterByNumbersAsync(string numbers, int pageSize, int pageIndex)
@@ -87,7 +105,16 @@ namespace WebMVC.Services
                 throw new HttpRequestException($"Error filtering by numbers: {response.StatusCode}, {errorContent}");
             }
 
-            return JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+            var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+
+            return new PaginatedItemsViewModel<PlateViewModel>
+            {
+                PageIndex = result.PageIndex,
+                PageSize = result.PageSize,
+                TotalItems = result.TotalItems,
+                TotalPages = (int)Math.Ceiling(result.TotalItems / (double)result.PageSize),
+                Data = result.Data.ToList()
+            };
         }
 
         public async Task<PaginatedItemsViewModel<PlateViewModel>> SearchPlatesAsync(string query, int pageSize, int pageIndex)
@@ -101,7 +128,16 @@ namespace WebMVC.Services
             }
             ;
 
-            return JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+            var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<PlateViewModel>>(await response.Content?.ReadAsStringAsync());
+
+            return new PaginatedItemsViewModel<PlateViewModel>
+            {
+                PageIndex = result.PageIndex,
+                PageSize = result.PageSize,
+                TotalItems = result.TotalItems,
+                TotalPages = (int)Math.Ceiling(result.TotalItems / (double)result.PageSize),
+                Data = result.Data.ToList()
+            };
         }
 
         public async Task<PlateViewModel> UpdatePlateStatusAsync(Guid id, PlateStatus newStatus)
