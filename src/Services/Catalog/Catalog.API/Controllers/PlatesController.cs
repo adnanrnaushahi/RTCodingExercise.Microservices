@@ -69,7 +69,6 @@ namespace Catalog.API.Controllers
             }
         }
 
-        // Add these methods to the PlatesController in Catalog.API
         [HttpGet("filterByLetters")]
         [ProducesResponseType(typeof(PaginatedItemsDto<PlateDto>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<PaginatedItemsDto<PlateDto>>> FilterByLetters(string letters, int pageSize = 20, int pageIndex = 0)
